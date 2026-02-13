@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inclusão Analítica | Ana Karolina</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Dashboard de Inclusão</h1>
+            <p>Estratégia e Dados por <strong>Ana Karolina</strong></p>
+        </header>
+
+        <section class="form-card">
+            <h3>Novo Registro</h3>
+            <div class="input-group">
+                <label>Data</label>
+                <input type="date" id="data">
+            </div>
+            <div class="input-group">
+                <label>Comportamento</label>
+                <select id="comportamento">
+                    <option value="Crise">Crise / Desorganização</option>
+                    <option value="Fuga">Fuga da Tarefa</option>
+                    <option value="Interacao">Interação Social</option>
+                    <option value="Engajamento">Engajamento na Atividade</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Frequência (Ocorrências)</label>
+                <input type="number" id="frequencia" placeholder="Ex: 5">
+            </div>
+            <button onclick="adicionarDado()">Registrar Evento</button>
+        </section>
+
+        <section class="chart-card">
+            <canvas id="graficoEvolucao"></canvas>
+        </section>
+        
+        <button class="btn-clear" onclick="limparDados()">Limpar Histórico</button>
+    </div>
+
+    <script>
+        let db = JSON.parse(localStorage.getItem('dadosInclusao')) || [];
+        const ctx = document.getElementById('graficoEvolucao').getContext('2d');
+        let meuGrafico;
+
+        function renderizarGrafico() {
+            if (meuGrafico) meuGrafico.destroy();
+            
+            // Ordenar por data
+            db.sort((a, b) => new Date(a.x) - new Date(b.x));
+
+            meuGrafico = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: 'Frequência de Comportamentos',
+                        data: db,
+                        borderColor: '#2c3e50',
+                        backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    scales: { x: { type: 'category', title: { display: true, text: 'Data' } } }
+                }
+            });
+        }
+
+        function adicionarDado() {
+            const data = document.getElementById('data').value;
+            const frequencia = document.getElementById('frequencia').value;
+            
+            if(!data || !frequencia) return alert("Preencha todos os campos!");
+
+            db.push({ x: data, y: parseInt(frequencia) });
+            localStorage.setItem('dadosInclusao', JSON.stringify(db));
+            renderizarGrafico();
+        }
+
+        function limparDados() {
+            if(confirm("Deseja apagar todo o histórico?")) {
+                localStorage.removeItem('dadosInclusao');
+                db = [];
+                renderizarGrafico();
+            }
+        }
+
+        renderizarGrafico();
+    </script>
+</body>
+</html>
