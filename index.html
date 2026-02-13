@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inclusão Analítica Pro | Auditoria Jurídico-Pedagógica</title>
+    <title>Inclusão Analítica Pro | Gestão Nacional e Auditoria</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -11,31 +11,33 @@
     <div class="container">
         <header>
             <h1>📊 Sistema Inclusão Analítica</h1>
-            <p>Compliance Jurídico e Inteligência de Dados | <strong>Ana Karolina</strong></p>
+            <p>Auditoria Estratégica e Inteligência de Rede | <strong>Ana Karolina</strong></p>
         </header>
 
         <section id="legalCard" class="legal-card" style="display: none;">
-            <h3>⚖️ Diagnóstico de Conformidade Legal (Output de Direito)</h3>
-            <div id="legalTexto">Selecione um filtro para gerar o parecer técnico.</div>
+            <h3>⚖️ Parecer Técnico de Auditoria (Fato e Direito)</h3>
+            <div id="legalTexto"></div>
+            <small>*Baseado na LBI (13.146/15), PNEE e diretrizes do FUNDEB.</small>
         </section>
 
         <section class="form-card">
-            <h3>🏫 Contexto da Unidade e Suporte</h3>
+            <h3>🏢 Configuração do Suporte e Rede</h3>
             <div class="input-row">
                 <div class="input-group">
-                    <label>Total de Alunos na Turma</label>
-                    <input type="number" id="totalAlunos" placeholder="Ex: 25">
+                    <label>Público-Alvo (PNEE/Deficiência)</label>
+                    <select id="tipoDeficiencia">
+                        <option value="TEA">TEA (Transtorno do Espectro Autista)</option>
+                        <option value="DI">Deficiência Intelectual</option>
+                        <option value="DV/DA">Deficiência Sensorial (Visual/Auditiva)</option>
+                        <option value="DF">Deficiência Física / Motora</option>
+                        <option value="AH/SD">Altas Habilidades / Superdotação</option>
+                    </select>
                 </div>
                 <div class="input-group">
-                    <label>Alunos PCD na Sala</label>
-                    <input type="number" id="totalPCD" placeholder="Ex: 3">
-                </div>
-                <div class="input-group">
-                    <label>Turno</label>
-                    <select id="turno">
-                        <option value="Manhã">Manhã</option>
-                        <option value="Tarde">Tarde</option>
-                        <option value="Integral">Integral</option>
+                    <label>Frequenta AEE? (Matrícula Dupla FUNDEB)</label>
+                    <select id="frequentaAEE">
+                        <option value="Sim">Sim (Em conformidade)</option>
+                        <option value="Não">Não (Déficit de Atendimento/Recurso)</option>
                     </select>
                 </div>
             </div>
@@ -43,26 +45,23 @@
                 <div class="input-group">
                     <label>Profissional de Apoio (Lei 13.146)</label>
                     <select id="temApoio">
-                        <option value="Sim">Sim (Exclusivo)</option>
-                        <option value="Compartilhado">Compartilhado</option>
-                        <option value="Não">Não (Déficit de Direito)</option>
+                        <option value="Exclusivo">Exclusivo (1:1)</option>
+                        <option value="Compartilhado">Compartilhado (Turma)</option>
+                        <option value="Ausente">Ausente (Gargalo Jurídico)</option>
                     </select>
                 </div>
                 <div class="input-group">
-                    <label>Acompanhamento por AT (ABA)</label>
-                    <select id="temAT">
-                        <option value="Sim">Sim</option>
-                        <option value="Não">Não</option>
-                    </select>
+                    <label>Rotatividade de Apoio (Trocas no ano)</label>
+                    <input type="number" id="rotatividade" placeholder="Qtd de profissionais">
                 </div>
             </div>
         </section>
 
         <section class="form-card">
-            <h3>📝 Registro de Evidência e Prática Pedagógica</h3>
+            <h3>📝 Evidência de Campo (PDI)</h3>
             <div class="input-row">
                 <div class="input-group">
-                    <label>Iniciais do Aluno</label>
+                    <label>Identificação (Iniciais)</label>
                     <input type="text" id="aluno" placeholder="Ex: A.K.P.">
                 </div>
                 <div class="input-group">
@@ -70,46 +69,47 @@
                     <input type="date" id="data">
                 </div>
                 <div class="input-group">
-                    <label>Adaptação Curricular (PDI)</label>
+                    <label>Adaptação Curricular Realizada?</label>
                     <select id="adaptacao">
-                        <option value="Sim">Sim (Integral)</option>
-                        <option value="Parcial">Parcial (Simplificada)</option>
+                        <option value="Sim">Sim (Material Adaptado)</option>
+                        <option value="Parcial">Parcial (Adaptação de Pequeno Porte)</option>
                         <option value="Não">Não (Risco de Exclusão)</option>
                     </select>
                 </div>
             </div>
             <div class="input-row">
                 <div class="input-group">
-                    <label>Comportamento/Ocorrência</label>
+                    <label>Ocorrência</label>
                     <select id="comportamento">
                         <option value="Crise">Crise / Desorganização</option>
                         <option value="Fuga">Fuga da Tarefa / Recusa</option>
-                        <option value="Interação">Interação Social Positiva</option>
                         <option value="Autonomia">Ganho de Autonomia</option>
+                        <option value="Interacao">Interação Social Positiva</option>
                     </select>
                 </div>
                 <div class="input-group">
                     <label>Frequência</label>
-                    <input type="number" id="frequencia" placeholder="Qtd">
+                    <input type="number" id="frequencia">
                 </div>
                 <div class="input-group">
-                    <label>Intensidade (1 a 5)</label>
-                    <input type="number" id="intensidade" min="1" max="5" placeholder="1-5">
+                    <label>Intensidade (Escala 1 a 5)</label>
+                    <input type="number" id="intensidade" min="1" max="5">
                 </div>
             </div>
-            <button class="btn-primary" onclick="adicionarDado()">Registrar e Auditar</button>
+            <button class="btn-primary" onclick="adicionarDado()">Registrar e Auditar Impacto</button>
         </section>
 
         <section class="chart-card">
             <div class="filter-header">
-                <h3>📈 Dashboard Analítico</h3>
+                <h3>📈 Dashboard de Auditoria Nacional</h3>
                 <div class="filters-container">
                     <select id="tipoFiltro" onchange="atualizarOpcoesFiltro()">
                         <option value="aluno">Por Aluno</option>
-                        <option value="turno">Por Turno</option>
+                        <option value="tipoDeficiencia">Por Tipo de Deficiência</option>
+                        <option value="frequentaAEE">Por Status AEE</option>
                     </select>
                     <select id="valorFiltro" onchange="renderizarGrafico()">
-                        <option value="">Selecione...</option>
+                        <option value="">Selecione para analisar...</option>
                     </select>
                 </div>
             </div>
@@ -117,8 +117,8 @@
         </section>
 
         <section class="actions">
-            <button class="btn-export" onclick="exportarCSV()">📥 Gerar Dossiê de Inclusão (Excel)</button>
-            <button class="btn-clear" onclick="limparDados()">⚠️ Reiniciar Sistema</button>
+            <button class="btn-export" onclick="exportarCSV()">📥 Gerar Dossiê Probatório (CSV)</button>
+            <button class="btn-clear" onclick="limparDados()">⚠️ Reiniciar Banco de Dados</button>
         </section>
     </div>
 
@@ -130,22 +130,36 @@
             const entry = {
                 aluno: document.getElementById('aluno').value.toUpperCase().trim(),
                 data: document.getElementById('data').value,
-                totalAlunos: document.getElementById('totalAlunos').value,
-                totalPCD: document.getElementById('totalPCD').value,
-                turno: document.getElementById('turno').value,
+                tipoDeficiencia: document.getElementById('tipoDeficiencia').value,
+                frequentaAEE: document.getElementById('frequentaAEE').value,
                 temApoio: document.getElementById('temApoio').value,
-                temAT: document.getElementById('temAT').value,
+                rotatividade: parseInt(document.getElementById('rotatividade').value) || 0,
                 adaptacao: document.getElementById('adaptacao').value,
                 comportamento: document.getElementById('comportamento').value,
                 frequencia: parseInt(document.getElementById('frequencia').value) || 0,
                 intensidade: parseInt(document.getElementById('intensidade').value) || 1
             };
 
-            if(!entry.aluno || !entry.data) return alert("Aluno e Data são obrigatórios.");
+            if(!entry.aluno || !entry.data) return alert("Campos obrigatórios: Aluno e Data.");
             db.push(entry);
             localStorage.setItem('dadosInclusao', JSON.stringify(db));
-            alert("Evidência registrada!");
+            alert("Evidência registrada para o Dossiê.");
             atualizarOpcoesFiltro();
+        }
+
+        function analisarJuridicamente(dados) {
+            const ultimo = dados[dados.length - 1];
+            let parecer = "";
+            
+            if(ultimo.frequentaAEE === "Não") parecer += "🔴 <strong>ALERTA DE GESTÃO:</strong> Aluno fora do AEE. Risco de perda de financiamento (FUNDEB) e descumprimento do Decreto 7.611/11.<br>";
+            if(ultimo.temApoio === "Ausente") parecer += "🔴 <strong>RISCO JURÍDICO ALTO:</strong> Ausência de Profissional de Apoio configura falha na prestação do serviço (Art. 28 LBI).<br>";
+            if(ultimo.rotatividade > 2) parecer += "⚠️ <strong>ALERTA DE INSTABILIDADE:</strong> Alta rotatividade de profissionais prejudica o desenvolvimento do PDI.<br>";
+            if(ultimo.adaptacao === "Não") parecer += "🔴 <strong>EXCLUSÃO PEDAGÓGICA:</strong> Falta de adaptação curricular fere o direito ao aprendizado efetivo.<br>";
+            
+            if(parecer === "") parecer = "✅ <strong>CONFORMIDADE:</strong> Os indicadores sugerem atendimento pleno aos requisitos da Lei 13.146/15.";
+            
+            document.getElementById('legalCard').style.display = 'block';
+            document.getElementById('legalTexto').innerHTML = parecer;
         }
 
         function atualizarOpcoesFiltro() {
@@ -156,28 +170,12 @@
             itens.forEach(i => { const opt = document.createElement('option'); opt.value = i; opt.textContent = i; select.appendChild(opt); });
         }
 
-        function analisarJuridicamente(dados) {
-            const ultimo = dados[dados.length - 1];
-            let parecer = "";
-            
-            if(ultimo.temApoio === "Não") parecer += "🔴 <strong>VIOLAÇÃO DE DIREITO:</strong> Ausência de Profissional de Apoio (Art. 28, XVII, LBI). <br>";
-            if(ultimo.adaptacao === "Não") parecer += "🔴 <strong>RISCO LEGAL:</strong> Inexistência de adaptação curricular (Art. 28, II, LBI). <br>";
-            if(parseInt(ultimo.totalPCD) > 3) parecer += "⚠️ <strong>ALERTA GESTÃO:</strong> Alta densidade de alunos PCD na mesma turma. <br>";
-            
-            if(parecer === "") parecer = "✅ <strong>CONFORMIDADE LEGAL:</strong> Inclusão amparada por recursos de apoio e adaptação.";
-            
-            document.getElementById('legalCard').style.display = 'block';
-            document.getElementById('legalTexto').innerHTML = parecer;
-        }
-
         function renderizarGrafico() {
             const tipo = document.getElementById('tipoFiltro').value;
             const valor = document.getElementById('valorFiltro').value;
             if(!valor) return;
-
             const dadosF = db.filter(d => d[tipo] === valor).sort((a,b) => new Date(a.data) - new Date(b.data));
             analisarJuridicamente(dadosF);
-
             const ctx = document.getElementById('graficoEvolucao').getContext('2d');
             if (meuGrafico) meuGrafico.destroy();
             meuGrafico = new Chart(ctx, {
@@ -193,15 +191,16 @@
         }
 
         function exportarCSV() {
-            let csv = "\uFEFFAluno;Data;AlunosTotal;PCDTotal;Turno;Apoio;AT;Adaptacao;Comportamento;Frequencia;Intensidade\n";
-            db.forEach(d => { csv += `${d.aluno};${d.data};${d.totalAlunos};${d.totalPCD};${d.turno};${d.temApoio};${d.temAT};${d.adaptacao};${d.comportamento};${d.frequencia};${d.intensidade}\n`; });
+            let csv = "\uFEFFAluno;Data;Deficiencia;AEE;Apoio;Rotatividade;Adaptacao;Comportamento;Frequencia;Intensidade\n";
+            db.forEach(d => { csv += `${d.aluno};${d.data};${d.tipoDeficiencia};${d.frequentaAEE};${d.temApoio};${d.rotatividade};${d.adaptacao};${d.comportamento};${d.frequencia};${d.intensidade}\n`; });
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement("a");
-            link.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
-            link.download = "dossie_inclusao_analitica.csv";
+            link.href = URL.createObjectURL(blob);
+            link.download = "dossie_auditoria_inclusao.csv";
             link.click();
         }
 
-        function limparDados() { if(confirm("Apagar tudo?")) { localStorage.clear(); location.reload(); } }
+        function limparDados() { if(confirm("Deseja apagar o banco de dados?")) { localStorage.clear(); location.reload(); } }
         atualizarOpcoesFiltro();
     </script>
 </body>

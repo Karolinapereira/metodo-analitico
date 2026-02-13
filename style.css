@@ -1,14 +1,14 @@
-:root { --legal: #1a3a5f; --accent: #3498db; --danger: #e74c3c; --bg: #f4f7f9; }
-body { background: var(--bg); font-family: 'Segoe UI', sans-serif; padding: 20px; color: #333; }
+:root { --legal: #1a3a5f; --accent: #3498db; --bg: #f8f9fa; }
+body { background: var(--bg); font-family: 'Segoe UI', Tahoma, sans-serif; padding: 20px; color: #333; }
 .container { max-width: 1000px; margin: auto; }
 header { text-align: center; border-bottom: 4px solid var(--legal); padding-bottom: 10px; margin-bottom: 30px; }
-.legal-card { background: #e8f4fd; border-left: 6px solid var(--legal); padding: 20px; border-radius: 8px; margin-bottom: 25px; }
+.legal-card { background: #e8f4fd; border-left: 6px solid var(--legal); padding: 20px; border-radius: 8px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
 .form-card, .chart-card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 25px; }
 .input-row { display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
-.input-group { flex: 1; min-width: 150px; }
+.input-group { flex: 1; min-width: 200px; }
 label { display: block; font-weight: bold; font-size: 13px; margin-bottom: 5px; color: var(--legal); }
-input, select { width: 100%; padding: 10px; border: 1.5px solid #ddd; border-radius: 6px; }
-.btn-primary { background: var(--legal); color: white; padding: 15px; width: 100%; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+input, select { width: 100%; padding: 12px; border: 1.5px solid #ddd; border-radius: 8px; }
+.btn-primary { background: var(--legal); color: white; padding: 18px; width: 100%; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
 .filters-container { display: flex; gap: 10px; margin-top: 10px; }
 .actions { display: flex; gap: 10px; }
 .btn-export { background: #27ae60; color: white; flex: 2; padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
