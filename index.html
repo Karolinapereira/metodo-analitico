@@ -3,44 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inclusão Analítica | Ana Karolina</title>
+    <title>Inclusão Analítica Pro | Ana Karolina</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>📊 Dashboard de Inclusão</h1>
+            <h1>📊 Sistema Inclusão Analítica</h1>
             <p>Estratégia e Dados por <strong>Ana Karolina</strong></p>
         </header>
 
         <section class="form-card">
-            <h3>Novo Registro</h3>
-            <div class="input-group">
-                <label>Data</label>
-                <input type="date" id="data">
+            <h3>📝 Registro de Observação</h3>
+            
+            <div class="input-row">
+                <div class="input-group">
+                    <label>Identificação do Aluno (Iniciais)</label>
+                    <input type="text" id="aluno" placeholder="Ex: A.S.P.">
+                </div>
+                <div class="input-group">
+                    <label>Data</label>
+                    <input type="date" id="data">
+                </div>
             </div>
-            <div class="input-group">
-                <label>Comportamento</label>
-                <select id="comportamento">
-                    <option value="Crise">Crise / Desorganização</option>
-                    <option value="Fuga">Fuga da Tarefa</option>
-                    <option value="Interacao">Interação Social</option>
-                    <option value="Engajamento">Engajamento na Atividade</option>
-                </select>
+
+            <div class="input-row">
+                <div class="input-group">
+                    <label>Professor Regente / Responsável</label>
+                    <input type="text" id="professor" placeholder="Nome do Professor ou Mãe/Pai">
+                </div>
+                <div class="input-group">
+                    <label>Turma / Ano / Local</label>
+                    <input type="text" id="turma" placeholder="Ex: 3º Ano B ou 'Casa'">
+                </div>
             </div>
-            <div class="input-group">
-                <label>Frequência (Ocorrências)</label>
-                <input type="number" id="frequencia" placeholder="Ex: 5">
+
+            <div class="input-row">
+                <div class="input-group">
+                    <label>Comportamento Alvo</label>
+                    <select id="comportamento">
+                        <option value="Crise">Crise / Desorganização</option>
+                        <option value="Fuga">Fuga da Tarefa</option>
+                        <option value="Interacao">Interação Social Positiva</option>
+                        <option value="Foco">Foco na Atividade</option>
+                        <option value="Estereotipia">Estereotipia</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Frequência (Ocorrências)</label>
+                    <input type="number" id="frequencia" placeholder="Ex: 3">
+                </div>
             </div>
-            <button onclick="adicionarDado()">Registrar Evento</button>
+
+            <button class="btn-primary" onclick="adicionarDado()">Registrar no Sistema</button>
         </section>
 
         <section class="chart-card">
+            <div class="chart-header">
+                <h3>📈 Evolução por Aluno</h3>
+                <select id="filtroAluno" onchange="renderizarGrafico()">
+                    <option value="">Selecione para ver o gráfico</option>
+                </select>
+            </div>
+            <div id="infoContexto" class="info-contexto"></div>
             <canvas id="graficoEvolucao"></canvas>
         </section>
-        
-        <button class="btn-clear" onclick="limparDados()">Limpar Histórico</button>
+
+        <section class="actions">
+            <button class="btn-export" onclick="exportarCSV()">📥 Exportar Relatório CSV</button>
+            <button class="btn-clear" onclick="limparDados()">⚠️ Limpar Tudo</button>
+        </section>
     </div>
 
     <script>
@@ -48,51 +81,45 @@
         const ctx = document.getElementById('graficoEvolucao').getContext('2d');
         let meuGrafico;
 
-        function renderizarGrafico() {
-            if (meuGrafico) meuGrafico.destroy();
-            
-            // Ordenar por data
-            db.sort((a, b) => new Date(a.x) - new Date(b.x));
-
-            meuGrafico = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    datasets: [{
-                        label: 'Frequência de Comportamentos',
-                        data: db,
-                        borderColor: '#2c3e50',
-                        backgroundColor: 'rgba(52, 152, 219, 0.2)',
-                        borderWidth: 3,
-                        fill: true,
-                        tension: 0.3
-                    }]
-                },
-                options: {
-                    scales: { x: { type: 'category', title: { display: true, text: 'Data' } } }
-                }
+        function atualizarFiltroAlunos() {
+            const select = document.getElementById('filtroAluno');
+            const alunosUnicos = [...new Set(db.map(d => d.aluno))];
+            select.innerHTML = '<option value="">Selecione o Aluno</option>';
+            alunosUnicos.forEach(aluno => {
+                const opt = document.createElement('option');
+                opt.value = aluno;
+                opt.textContent = aluno;
+                select.appendChild(opt);
             });
         }
 
         function adicionarDado() {
+            const aluno = document.getElementById('aluno').value.toUpperCase();
             const data = document.getElementById('data').value;
             const frequencia = document.getElementById('frequencia').value;
+            const professor = document.getElementById('professor').value || "Não informado";
+            const turma = document.getElementById('turma').value || "Não informado";
+            const comportamento = document.getElementById('comportamento').value;
             
-            if(!data || !frequencia) return alert("Preencha todos os campos!");
+            if(!aluno || !data || !frequencia) return alert("Preencha Aluno, Data e Frequência!");
 
-            db.push({ x: data, y: parseInt(frequencia) });
+            db.push({ aluno, x: data, y: parseInt(frequencia), professor, turma, tipo: comportamento });
             localStorage.setItem('dadosInclusao', JSON.stringify(db));
-            renderizarGrafico();
+            
+            atualizarFiltroAlunos();
+            alert("Registrado com sucesso!");
+            document.getElementById('frequencia').value = '';
         }
 
-        function limparDados() {
-            if(confirm("Deseja apagar todo o histórico?")) {
-                localStorage.removeItem('dadosInclusao');
-                db = [];
-                renderizarGrafico();
-            }
-        }
+        function renderizarGrafico() {
+            if (meuGrafico) meuGrafico.destroy();
+            const alunoSel = document.getElementById('filtroAluno').value;
+            const infoDiv = document.getElementById('infoContexto');
+            
+            if(!alunoSel) { infoDiv.innerHTML = ""; return; }
 
-        renderizarGrafico();
-    </script>
-</body>
-</html>
+            const dadosF = db.filter(d => d.aluno === alunoSel).sort((a, b) => new Date(a.x) - new Date(b.x));
+            
+            // Mostrar contexto do último registro
+            const ultimo = dadosF[dadosF.length - 1];
+            infoDiv.innerHTML = `<strong>Contexto:</strong> ${ultimo.tur
