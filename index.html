@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inclusão Analítica Pro | Gestão Estratégica</title>
+    <title>Inclusão Analítica Pro | Inteligência de Dados</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -11,28 +11,31 @@
     <div class="container">
         <header>
             <h1>📊 Sistema Inclusão Analítica</h1>
-            <p>Estratégia e Inteligência de Dados por <strong>Ana Karolina</strong></p>
+            <p>Estratégia e Inteligência por <strong>Ana Karolina</strong></p>
         </header>
 
+        <section id="insightCard" class="insight-card" style="display: none;">
+            <h3>💡 Insights Estratégicos</h3>
+            <p id="insightTexto">Selecione um filtro para ver a análise automática.</p>
+        </section>
+
         <section class="form-card">
-            <h3>📝 Novo Registro de Observação</h3>
-            
+            <h3>📝 Novo Registro</h3>
             <div class="input-row">
                 <div class="input-group">
                     <label>Identificação do Aluno</label>
-                    <input type="text" id="aluno" placeholder="Iniciais ou Nome">
+                    <input type="text" id="aluno" placeholder="Nome ou Iniciais">
                 </div>
                 <div class="input-group">
                     <label>Data</label>
                     <input type="date" id="data">
                 </div>
             </div>
-
             <div class="input-row">
                 <div class="input-group">
                     <label>Tipo de Ensino</label>
                     <select id="tipoEnsino">
-                        <option value="Anos Iniciais">Anos Iniciais (Infantil)</option>
+                        <option value="Anos Iniciais">Anos Iniciais</option>
                         <option value="Fundamental 1">Fundamental 1</option>
                         <option value="Fundamental 2">Fundamental 2</option>
                         <option value="Ensino Médio">Ensino Médio</option>
@@ -50,12 +53,23 @@
                     </select>
                 </div>
             </div>
-
             <div class="input-row">
                 <div class="input-group">
-                    <label>Turma / Sala (Ex: A, B, C, Única)</label>
-                    <input type="text" id="turma" placeholder="Ex: 4º Ano B ou Sala 05">
+                    <label>Turma / Sala</label>
+                    <input type="text" id="turma" placeholder="Ex: 4º B">
                 </div>
+                <div class="input-group">
+                    <label>Intensidade (1 a 5)</label>
+                    <select id="intensidade">
+                        <option value="1">1 - Muito Leve</option>
+                        <option value="2">2 - Leve</option>
+                        <option value="3">3 - Moderada</option>
+                        <option value="4">4 - Alta</option>
+                        <option value="5">5 - Crítica</option>
+                    </select>
+                </div>
+            </div>
+            <div class="input-row">
                 <div class="input-group">
                     <label>Comportamento</label>
                     <select id="comportamento">
@@ -65,154 +79,21 @@
                         <option value="Foco">Foco na Atividade</option>
                     </select>
                 </div>
-            </div>
-
-            <div class="input-row">
                 <div class="input-group">
-                    <label>Frequência (Ocorrências)</label>
+                    <label>Frequência</label>
                     <input type="number" id="frequencia" placeholder="Ex: 1">
                 </div>
-                <div class="input-group">
-                    <label>Professor / Responsável</label>
-                    <input type="text" id="professor" placeholder="Nome do Professor ou Mãe">
-                </div>
             </div>
-
-            <button class="btn-primary" onclick="adicionarDado()">Registrar no Banco de Dados</button>
+            <button class="btn-primary" onclick="adicionarDado()">Registrar Dados</button>
         </section>
 
         <section class="chart-card">
             <div class="filter-header">
-                <h3>📈 Dashboard Analítico</h3>
+                <h3>📈 Análise de Indicadores</h3>
                 <div class="filters-container">
                     <div class="filter-box">
-                        <label>Filtrar Visualização por:</label>
+                        <label>Filtrar por:</label>
                         <select id="tipoFiltro" onchange="atualizarOpcoesFiltro()">
-                            <option value="aluno">Por Aluno</option>
-                            <option value="turma">Por Turma / Sala</option>
-                            <option value="tipoEnsino">Por Tipo de Ensino</option>
-                            <option value="turno">Por Turno</option>
-                        </select>
-                    </div>
-                    <div class="filter-box">
-                        <label>Selecionar Específico:</label>
-                        <select id="valorFiltro" onchange="renderizarGrafico()">
-                            <option value="">Selecione...</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <canvas id="graficoEvolucao"></canvas>
-        </section>
-
-        <section class="actions">
-            <button class="btn-export" onclick="exportarCSV()">📥 Exportar Dados (CSV/Excel)</button>
-            <button class="btn-clear" onclick="limparDados()">⚠️ Reiniciar Histórico</button>
-        </section>
-    </div>
-
-    <script>
-        let db = JSON.parse(localStorage.getItem('dadosInclusao')) || [];
-        let meuGrafico;
-
-        function adicionarDado() {
-            const aluno = document.getElementById('aluno').value.toUpperCase().trim();
-            const data = document.getElementById('data').value;
-            const tipoEnsino = document.getElementById('tipoEnsino').value;
-            const turno = document.getElementById('turno').value;
-            const turma = document.getElementById('turma').value.toUpperCase().trim();
-            const comportamento = document.getElementById('comportamento').value;
-            const frequencia = document.getElementById('frequencia').value;
-            const professor = document.getElementById('professor').value;
-
-            if(!aluno || !data || !frequencia) return alert("Preencha Aluno, Data e Frequência!");
-
-            db.push({ aluno, data, tipoEnsino, turno, turma, comportamento, frequencia: parseInt(frequencia), professor });
-            localStorage.setItem('dadosInclusao', JSON.stringify(db));
-            
-            alert("Sucesso! Registro armazenado.");
-            atualizarOpcoesFiltro();
-            document.getElementById('frequencia').value = '';
-        }
-
-        function atualizarOpcoesFiltro() {
-            const tipo = document.getElementById('tipoFiltro').value;
-            const selectValor = document.getElementById('valorFiltro');
-            const itensUnicos = [...new Set(db.map(d => d[tipo]))];
-
-            selectValor.innerHTML = '<option value="">Selecione...</option>';
-            itensUnicos.forEach(item => {
-                const opt = document.createElement('option');
-                opt.value = item;
-                opt.textContent = item;
-                selectValor.appendChild(opt);
-            });
-        }
-
-        function renderizarGrafico() {
-            const ctx = document.getElementById('graficoEvolucao').getContext('2d');
-            if (meuGrafico) meuGrafico.destroy();
-
-            const tipo = document.getElementById('tipoFiltro').value;
-            const valor = document.getElementById('valorFiltro').value;
-            if(!valor) return;
-
-            let dadosFiltrados = db.filter(d => d[tipo] === valor);
-            
-            // Agrupar por data (Soma das frequências por dia)
-            const dadosAgrupados = dadosFiltrados.reduce((acc, curr) => {
-                acc[curr.data] = (acc[curr.data] || 0) + curr.frequencia;
-                return acc;
-            }, {});
-
-            const labels = Object.keys(dadosAgrupados).sort();
-            const valores = labels.map(l => dadosAgrupados[l]);
-
-            meuGrafico = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: `Frequência Acumulada: ${valor}`,
-                        data: valores,
-                        borderColor: '#2980b9',
-                        backgroundColor: 'rgba(41, 128, 185, 0.1)',
-                        borderWidth: 3,
-                        pointRadius: 6,
-                        fill: true,
-                        tension: 0.3
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
-                }
-            });
-        }
-
-        function exportarCSV() {
-            if(db.length === 0) return alert("Não há dados.");
-            let csv = "\uFEFFAluno;Data;Ensino;Turno;Turma_Sala;Comportamento;Frequencia;Responsavel\n";
-            db.forEach(d => {
-                csv += `${d.aluno};${d.data};${d.tipoEnsino};${d.turno};${d.turma};${d.comportamento};${d.frequencia};${d.professor}\n`;
-            });
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = "relatorio_analitico_ana_karolina.csv";
-            link.click();
-        }
-
-        function limparDados() {
-            if(confirm("Deseja apagar todos os dados registrados?")) {
-                localStorage.removeItem('dadosInclusao');
-                db = [];
-                atualizarOpcoesFiltro();
-                if(meuGrafico) meuGrafico.destroy();
-            }
-        }
-        
-        atualizarOpcoesFiltro();
-    </script>
-</body>
-</html>
+                            <option value="aluno">Aluno</option>
+                            <option value="turma">Turma / Sala</option>
+                            <option value="tipoEns
